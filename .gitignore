@@ -1,0 +1,11 @@
+__pycache__/
+*.py[cod]
+.venv/
+dist/
+*.zip
+.env
+.env.*
+!.env.example
+private/
+orders/
+.DS_Store

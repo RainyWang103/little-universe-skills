@@ -1,0 +1,4 @@
+interface:
+  display_name: "Travel Planner · Little Universe"
+  short_description: "两人艺术、文化、美食旅行规划与事实核验"
+  default_prompt: "请使用 $travel-planner，依据我已提供的条件规划两人旅行，先核查目标日期的硬约束，再给出路线取舍、可执行行程和预订优先级。"

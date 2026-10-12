@@ -29,7 +29,8 @@ class ScriptTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / 'repo'
-        shutil.copytree(ROOT / 'skills', self.root / 'skills')
+        # These malformed-input fixtures intentionally start with one known Skill.
+        shutil.copytree(ROOT / 'skills/travel-planner', self.root / 'skills/travel-planner')
         shutil.copytree(ROOT / '.github', self.root / '.github')
         shutil.copytree(ROOT / 'scripts', self.root / 'scripts', ignore=shutil.ignore_patterns('__pycache__'))
         for filename in ('README.md', '.gitignore'):
@@ -51,6 +52,11 @@ class ScriptTests(unittest.TestCase):
 
     def test_valid_repository(self):
         result = self.cli()
+        self.assertEqual(result.returncode, 0, result.stderr)
+
+    def test_all_shipped_skills_validate(self):
+        result = subprocess.run([sys.executable, str(ROOT / 'scripts/validate-skills.py'),
+                                 '--root', str(ROOT)], capture_output=True, text=True)
         self.assertEqual(result.returncode, 0, result.stderr)
 
     def test_missing_frontmatter(self):
@@ -177,3 +183,4 @@ class ScriptTests(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+

@@ -3,8 +3,16 @@ Little Universe Skill repository
 
 ## 内容与规则来源
 
-这是团队共用的公开 ChatGPT Skills Monorepo。当前 Skill 为
-[Travel Planner](skills/travel-planner/SKILL.md)：两人艺术、文化、美食旅行规划。
+这是团队共用的公开 ChatGPT Skills Monorepo。当前包含：
+
+- [Travel Planner](skills/travel-planner/SKILL.md)：两人艺术、文化、美食旅行规划。
+- [手绘海报](skills/hand-drawn-poster/SKILL.md)：一张照片生成 3:4 编辑海报，
+  上半摄影、下半极简纸本手绘，各占 50%，默认无文字。
+  触发词为“手绘”“极简手绘”“手绘图”“手绘海报”；明确调用后仅需上传图片。
+  运行需宿主参考图生成工具及 Python/Pillow，拼接依赖见该 Skill 的 `requirements.txt`。
+  照片和输出不提交到公开仓库；独立包不代表已注册或安装到 ChatGPT。
+
+Travel Planner 的
 入口按执行阶段导航至六份详细参考；参考逐段保留本次权威实施文件第 2–7 节，
 不假设可以访问 Project Instructions、历史对话或未提供的私人材料。
 
@@ -79,3 +87,4 @@ travel-planner/
 在 `skills/<lowercase-hyphen-name>/` 放置简短 `SKILL.md`、`agents/openai.yaml`
 及按需加载的详细 `references/`。名称必须与目录一致，默认提示需包含 `$<name>`。
 通过全部验证、测试及公开信息审查后走 PR；打包器会自动为每个 Skill 生成独立包。
+

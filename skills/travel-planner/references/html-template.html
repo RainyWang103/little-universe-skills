@@ -41,7 +41,7 @@ details.sources{margin-top:12px;font-size:11px;color:var(--muted)}details.source
   顺序固定：封面 → 出发前待办 → 固定安排·行程锚点 → 逐日卡片 → 地图依据与精度说明 → 版本脚注。
   状态措辞：已订／已确认（订单或店家回复）· 票面待核（用户提供）· 公开资料暂列 · 未订／未购票 · 仅候选，未选未订。
   CSS 布局与组件样式保留，不要删减结构规则；手机与打印样式已内置。
-  配色可调：按目的地改 :root 的 --paper/--accent/--ink/--muted/--line/--green；偏好低饱和背景与主色，并同步 nav-wrap 等处写死的 rgba。
+  配色可调：按目的地改 :root 的 --accent 色相，饱和度／明度对齐默认 #94453c（约 HSL S~42% L~41%），勿用发雾灰蓝主色；--paper 默认避免灰底，宜用暖蓝／暖雾浅底（如 #eef3f9，或更浅 #f5f8fc），勿用冷灰底、偏深雾蓝底或偏灰米黄感；避免霓虹。同步 nav-wrap 等处写死的 rgba。示例：大连 --accent:#3c6894 + --paper:#eef3f9。
 -->
 <header class="hero" id="top"><div class="eyebrow">A PERSONAL TRAVEL JOURNAL · {{DESTINATION_EN}}</div><h1>{{TRIP_TITLE}}</h1><p class="hero-desc">{{一句话描述：天数、同行、主题；已订住宿等关键状态}}</p><div class="meta"><span>{{DATE_RANGE_EN 如 16—19 OCT 2026}}</span><span>{{N}} DAYS · {{M}} NIGHTS</span><span>V{{主}}.{{次}} · {{STAGE 如 WORKING DRAFT}}</span></div></header>
 <div class="nav-wrap"><nav aria-label="页面内快速导航"><a href="#practical">待办优先级</a><a href="#anchors">固定安排</a><!-- REPEAT 每天一个 --><a href="#day1">{{M/D}} {{短标签}}</a><!-- /REPEAT --><a href="#map-sources">地图依据</a></nav></div>

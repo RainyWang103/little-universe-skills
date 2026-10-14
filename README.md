@@ -15,6 +15,7 @@ Little Universe Skill repository
   资深建筑史／艺术史级深度讲解；强制六段结构；事实须核实。
   用于讲透一座建筑、结构与风格分析、参观动线与细看要点；并附类型速查卡与行程衔接字段。
 - [Safety Charter](skills/safety-charter/SKILL.md)：全局安全宪章。行动前核对授权、不可信内容、付款禁令与 Bot 互调深度。
+- [Travel Food Guide](skills/travel-food-guide/SKILL.md)：旅行餐饮深度：当地当季优先、多源核验、推荐卡片。
 
 Travel Planner 的
 入口按执行阶段导航至六份详细参考；参考逐段保留本次权威实施文件第 2–7 节，

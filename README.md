@@ -13,7 +13,7 @@ Little Universe Skill repository
   照片和输出不提交到公开仓库；独立包不代表已注册或安装到 ChatGPT。
 - [Travel Architecture Deep Guide](skills/travel-architecture-deep-guide/SKILL.md)：对建筑、历史街区、博物馆或人文遗产做
   资深建筑史／艺术史级深度讲解；强制六段结构；事实须核实。
-  用于讲透一座建筑、结构与风格分析、参观动线与细看要点。
+  用于讲透一座建筑、结构与风格分析、参观动线与细看要点；并附类型速查卡与行程衔接字段。
 
 Travel Planner 的
 入口按执行阶段导航至六份详细参考；参考逐段保留本次权威实施文件第 2–7 节，

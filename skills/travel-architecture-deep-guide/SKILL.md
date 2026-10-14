@@ -1,5 +1,5 @@
 ---
-name: architecture-deep-guide
+name: travel-architecture-deep-guide
 description: >-
   对建筑、历史街区、博物馆或人文遗产做资深建筑史／艺术史级深度讲解；用于用户要求建筑深度讲解、讲透一座建筑、结构与风格分析、参观动线与细看要点时。
 ---

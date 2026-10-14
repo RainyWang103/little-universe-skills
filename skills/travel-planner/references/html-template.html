@@ -1,0 +1,115 @@
+<!doctype html><html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>{{TRIP_TITLE}} · V{{主}}.{{次}}</title><style>
+:root{--paper:#faf8f4;--ink:#302e2a;--muted:#706b63;--accent:#94453c;--line:#ded5c8;--green:#526b53}
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:72px}body{margin:0;background:var(--paper);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Noto Sans CJK SC","PingFang SC","Microsoft YaHei",sans-serif;font-size:16px;line-height:1.75;-webkit-font-smoothing:antialiased;font-variant-numeric:tabular-nums}a{color:inherit;text-decoration:none}
+.hero,main{max-width:860px;margin:auto;padding-inline:32px;border-inline:1px solid var(--line)}.hero{padding-top:30px;padding-bottom:23px}.eyebrow{font:600 10px/1.5 Arial,sans-serif;letter-spacing:.13em;color:var(--accent)}h1{font:500 clamp(27px,5vw,37px)/1.4 "Noto Serif CJK SC","Songti SC",serif;letter-spacing:.025em;margin:10px 0}.hero-desc{font-size:14px;color:var(--muted);margin:8px 0}.meta{display:flex;gap:14px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:12px}
+.nav-wrap{position:sticky;top:0;z-index:10;background:rgba(250,248,244,.97);border-block:1px solid var(--line);backdrop-filter:blur(12px)}nav{max-width:860px;margin:auto;display:flex;gap:5px;overflow-x:auto;white-space:nowrap;padding:8px 22px;scrollbar-width:none}nav::-webkit-scrollbar{display:none}nav a{padding:6px 11px;border-radius:5px;font-size:13px}nav a:first-child{color:var(--accent);font-weight:600}nav a:hover,nav a:focus-visible{background:#f0e8df}main{padding-bottom:40px}
+.practical{padding:26px 0 30px;border-bottom:1px solid var(--line);scroll-margin-top:66px}.todo-heading{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:18px}.todo-heading h2{font-size:22px;line-height:1.4;margin:0}.todo-heading>span{font-size:12px;color:var(--muted)}.priority-group{margin-top:20px}.priority-group h3{display:flex;align-items:baseline;gap:9px;font-size:15px;line-height:1.5;margin:0;padding-bottom:8px;border-bottom:1px solid var(--line)}.priority-group h3>span{color:var(--accent);font:600 12px Arial,sans-serif}.priority-group h3 small{color:var(--muted);font-size:12px;font-weight:400}.urgent h3{color:var(--accent)}.todo{display:flex;align-items:flex-start;gap:11px;padding:11px 0;border-bottom:1px dashed #e5ddd2;cursor:pointer}.todo:last-child{border-bottom:0}.todo input{accent-color:var(--accent);width:17px;height:17px;flex:none;margin:5px 0 0}.todo b{font-size:15px;font-weight:600}.todo small{display:block;font-size:13px;line-height:1.75;color:var(--muted);margin-top:3px}.todo input:checked+span{opacity:.52}.todo input:checked+span b{text-decoration:line-through}
+.day{padding:30px 0;border-bottom:1px solid var(--line);scroll-margin-top:66px}.day-head{border-block:1px solid #cabaa5;background:#f3eee6;break-inside:avoid}.day-heading{padding:14px 17px 11px}.day-head h2{display:flex;align-items:center;flex-wrap:wrap;gap:12px;font-size:17px;font-weight:600;line-height:1.5;margin:0}.day-number{font:600 11px/1.5 Arial,sans-serif;letter-spacing:.09em;color:var(--accent)}.day-place{font:600 21px/1.4 "Noto Serif CJK SC","Songti SC",serif;margin:5px 0 6px}.route-line{font-size:12px;line-height:1.65;color:var(--muted)}.stay-bar{display:flex;justify-content:space-between;align-items:center;gap:10px;border-top:1px solid #ded4c6;padding:9px 17px;color:var(--green)}.stay-copy{min-width:0}.stay-name{font-size:13px;line-height:1.6}.stay-label{margin-right:10px;color:var(--muted)}.stay-note{font-size:12px;color:var(--muted);margin:2px 0 0;line-height:1.5}.stay-status{font-size:12px;white-space:nowrap;flex:none}.checkout{color:#746a59}.day-intro{font-size:14px;line-height:1.8;color:var(--muted);margin:15px 0 0}
+.section-title{display:flex;align-items:baseline;gap:10px;color:var(--accent);font-weight:600;font-size:16px;margin:23px 0 7px}.section-title small{font:500 9px/1.5 Arial,sans-serif;letter-spacing:.1em;color:#8c8376}.event{display:grid;grid-template-columns:105px minmax(0,1fr);gap:14px;padding:13px 0;border-bottom:1px dashed #ded4c6}.event time{font:600 13px/1.8 Arial,sans-serif;color:var(--accent);white-space:nowrap}.event strong{font-size:16px;font-weight:600;line-height:1.7}.event p{margin:5px 0 0;color:var(--muted);font-size:14px;line-height:1.8}.pending{display:inline-block;font-size:11px;line-height:1.6;vertical-align:2px;white-space:nowrap;background:#f6e4bb;color:#7b4a11;border:1px solid #e5c789;border-radius:4px;padding:1px 6px;margin-left:7px}.status-note{font-size:11px;white-space:nowrap;color:var(--muted);margin-left:7px}
+.route-combo{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,.9fr);gap:18px;background:#f4f0e9;border:1px solid #e6dbcd;padding:16px;align-items:start}.transport,.map{min-width:0}.mini-head{font-size:12px;color:#8b6b5e;margin-bottom:5px}.transport ul{list-style:none;padding:0;margin:0}.transport li{font-size:13px;line-height:1.75;padding:8px 0;border-bottom:1px dashed #d8cabe;overflow-wrap:anywhere}.transport li:last-child{border-bottom:0}.map svg{display:block;width:100%;height:auto;border:1px solid #e7ded3}.map-label{font:9px/1.2 "Noto Sans CJK SC",sans-serif;fill:#584a43;paint-order:stroke;stroke:#fcfaf6;stroke-width:2px;stroke-linejoin:round}.map-caption{font-size:10px;color:#81786b;margin-top:6px}.footer{font-size:11px;color:var(--muted);padding-top:20px}
+@media(max-width:540px){.hero,main{padding-inline:20px;border:0}.hero{padding-top:24px;padding-bottom:19px}.eyebrow{font-size:8px;letter-spacing:.08em}h1{font-size:27px}.hero-desc{font-size:13px}.meta{gap:7px 13px;font-size:10px}nav{padding-inline:10px}.todo-heading{align-items:flex-start;gap:8px}.todo-heading h2{font-size:21px}.todo-heading>span{font-size:11px;padding-top:5px}.priority-group h3{gap:7px;flex-wrap:wrap}.priority-group h3 small{font-size:11px}.todo b{font-size:14px}.todo small{font-size:13px}.day-heading{padding:12px 13px 10px}.day-head h2{font-size:16px;gap:10px}.day-place{font-size:20px}.route-line{font-size:11px}.stay-bar{padding:8px 13px}.stay-name{font-size:12px}.stay-note{font-size:11px}.stay-label{margin-right:7px}.day-intro{font-size:14px}.event{grid-template-columns:88px minmax(0,1fr);gap:10px}.event time{font-size:12px}.event strong{font-size:15px}.event p{font-size:14px}.route-combo{grid-template-columns:1fr;padding:13px;gap:12px}.map{max-width:330px;width:100%;margin:auto}.section-title small{font-size:8px}}
+@media print{.nav-wrap{display:none}.hero,main{border:0}.day-head,.todo,.event,.route-combo{break-inside:avoid}.day{padding-top:24px}.day-head,.pending,.route-combo{print-color-adjust:exact;-webkit-print-color-adjust:exact}}
+
+/* Compact editorial layout, after the France itinerary. */
+body{line-height:1.55;font-size:15px;background:#fffdfa}
+.hero,main{max-width:820px;padding-inline:27px}.hero{padding-top:21px;padding-bottom:17px;text-align:center}
+h1{margin:7px 0;font-size:31px}.hero-desc{margin:5px 0;font-size:13px}.meta{justify-content:center;margin-top:9px}
+.nav-wrap{background:rgba(255,253,250,.97)}nav{padding:5px 18px}nav a{padding:5px 8px;font-size:12px}
+.practical{padding:18px 0}.todo-heading{margin-bottom:10px}.todo-heading h2{font-size:20px}
+.priority-group{margin-top:13px}.priority-group h3{padding-bottom:5px;font-size:14px}
+.todo{padding:7px 0;gap:9px}.todo b{font-size:14px}.todo small{font-size:12.5px;line-height:1.55;margin-top:2px}.todo small a{text-decoration:underline;text-underline-offset:2px}.anchors{padding:18px 0 22px;border-bottom:1px solid var(--line);scroll-margin-top:66px}.anchors h2{font-size:20px;margin:0 0 5px}.anchors>p{font-size:12px;color:var(--muted);margin:0 0 12px}.anchor-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.anchor-card{padding:10px 12px;border:1px solid var(--line);background:#fcfaf6}.anchor-card b{display:block;font-size:13px}.anchor-card small{display:block;color:var(--muted);font-size:11.5px;line-height:1.5;margin-top:3px}.anchor-card em{font-style:normal;color:var(--accent)}.anchor-ref{display:inline-block;margin:0 0 8px;padding:3px 7px;border:1px solid var(--line);color:var(--accent);font-size:11px;text-decoration:none}.anchor-ref:hover{text-decoration:underline}@media(max-width:540px){.anchor-list{grid-template-columns:1fr}.anchors{padding:15px 0}.anchor-card{padding:8px 10px}}.todo input{margin-top:3px;width:15px;height:15px}
+.day{padding:20px 0}.day-head{background:transparent;border-top:2px solid #bbaa92;border-bottom:1px solid var(--line)}
+.day-heading{padding:9px 0 7px}.day-head h2{font-size:15px;gap:9px}.day-place{font-size:22px;margin:3px 0}.route-line{font-size:11.5px;line-height:1.5}
+.stay-bar{padding:6px 0}.stay-name{font-size:12px}.stay-note{font-size:11px;margin-top:0}.day-intro{font-size:13px;line-height:1.6;margin:9px 0}
+.section-title{font-size:14px;margin:14px 0 4px}.event{grid-template-columns:101px minmax(0,1fr);gap:12px;padding:8px 0}
+.event time{font-size:12px;line-height:1.6}.event strong{font:600 15px/1.55 "Noto Serif CJK SC","Songti SC",serif}
+.event p{font-size:13px;line-height:1.55;margin:2px 0 0}.pending{font-size:10px;padding:0 5px}.status-note{font-size:10px}
+.route-combo{display:block;background:transparent;border:0;border-top:1px dotted #bdaa91;padding:9px 0 0}
+.transport ul{display:grid;grid-template-columns:1fr 1fr;gap:0 18px}.transport li{font-size:12px;padding:4px 0;line-height:1.5}.mini-head{font-size:11px;margin-bottom:2px}
+.map{width:100%;max-width:none;margin:9px 0 0}.map svg{border:0;background:#fcfaf6}.map-caption{font-size:11px;line-height:1.5;margin-top:5px}
+.map-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}.map-title{font-size:12px;color:var(--accent);margin:7px 0 4px;font-weight:600}
+.map-key{display:flex;gap:10px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin-top:5px}
+.unplaced{font-size:12px;line-height:1.6;color:var(--muted);padding:7px 0;border-top:1px dotted var(--line)}
+details.sources{margin-top:12px;font-size:11px;color:var(--muted)}details.sources summary{cursor:pointer}details.sources ul{padding-left:18px}details.sources a{text-decoration:underline;overflow-wrap:anywhere}
+.footer{padding-top:14px;font-size:10.5px;line-height:1.6}
+@media(max-width:540px){.hero,main{padding-inline:16px}.hero{padding-top:17px;padding-bottom:14px}h1{font-size:27px}.hero-desc{font-size:12px}.eyebrow{font-size:8px}.meta{font-size:9px;gap:5px 10px}.practical{padding:15px 0}.todo-heading h2{font-size:19px}.todo b{font-size:13px}.todo small{font-size:12px}.day{padding:17px 0}.day-heading{padding:8px 0 6px}.day-place{font-size:21px}.stay-bar{padding:5px 0}.day-intro{font-size:12.5px}.event{grid-template-columns:85px minmax(0,1fr);gap:9px;padding:7px 0}.event time{font-size:11px}.event strong{font-size:14px}.event p{font-size:12.5px}.route-combo{padding:7px 0 0}.transport ul{grid-template-columns:1fr}.transport li{font-size:11.5px;padding:3px 0}.map-grid{grid-template-columns:1fr;gap:5px}.map{max-width:none;margin-top:7px}.map-caption{font-size:10.5px}.section-title{margin-top:12px}.priority-group h3{font-size:13px}.todo-heading>span{font-size:10px}}
+@media print{@page{size:A4;margin:12mm 13mm}body{font-size:11px}.hero,main{max-width:none;padding-inline:0}.hero{padding-top:0}.event{padding:6px 0}.day{padding-top:15px}.map-grid{grid-template-columns:1fr 1fr}.map{break-inside:avoid}.map-caption{font-size:9px}details.sources{display:none}}
+</style></head><body>
+<!--
+  Travel Planner · 可复用 HTML 行程模板（抽象自一份已打磨的连续阅读式行程）
+  用法：复制本文件到旅行文件夹，替换全部 {{占位符}}；按 REPEAT 注释复制/删除重复块。
+  顺序固定：封面 → 出发前待办 → 固定安排·行程锚点 → 逐日卡片 → 地图依据与精度说明 → 版本脚注。
+  状态措辞：已订／已确认（订单或店家回复）· 票面待核（用户提供）· 公开资料暂列 · 未订／未购票 · 仅候选，未选未订。
+  CSS 保留原版，不要删减；手机与打印样式已内置。
+-->
+<header class="hero" id="top"><div class="eyebrow">A PERSONAL TRAVEL JOURNAL · {{DESTINATION_EN}}</div><h1>{{TRIP_TITLE}}</h1><p class="hero-desc">{{一句话描述：天数、同行、主题；已订住宿等关键状态}}</p><div class="meta"><span>{{DATE_RANGE_EN 如 16—19 OCT 2026}}</span><span>{{N}} DAYS · {{M}} NIGHTS</span><span>V{{主}}.{{次}} · {{STAGE 如 WORKING DRAFT}}</span></div></header>
+<div class="nav-wrap"><nav aria-label="页面内快速导航"><a href="#practical">待办优先级</a><a href="#anchors">固定安排</a><!-- REPEAT 每天一个 --><a href="#day1">{{M/D}} {{短标签}}</a><!-- /REPEAT --><a href="#map-sources">地图依据</a></nav></div>
+<main>
+<section class="practical" id="practical" aria-labelledby="todo-heading">
+<div class="todo-heading"><h2 id="todo-heading">出发前待办</h2><span>按优先级处理 · 可勾选</span></div>
+<div class="priority-group urgent"><h3><span>01</span> 最紧急 <small>{{本组目标：稀缺资格／硬交通}}</small></h3><div class="todos">
+<!-- REPEAT 待办项：标题＝对象｜动作；正文＝电话/入口 → 要问的具体问题 → 付款前核对 → 末句“状态：…” -->
+<label class="todo"><input type="checkbox" data-check="{{唯一KEY}}"><span><b>{{对象}}｜{{动作}}</b><small>先致电 <a href="tel:{{PHONE}}">{{PHONE}}</a>，问清{{问题1}}、{{问题2}}、{{问题3}}。可在<a href="{{URL}}">{{购票入口名}}</a>查看，付款前核对目标日期与规则。{{来源与查阅日期}}。状态：{{未预约／未购票／已订}}。</small></span></label>
+<!-- /REPEAT -->
+</div></div>
+<div class="priority-group"><h3><span>02</span> 出发前确认 <small>{{如：航班、入住、餐饮}}</small></h3><div class="todos">
+<label class="todo"><input type="checkbox" data-check="{{KEY}}"><span><b>{{对象}}｜{{动作}}</b><small>{{你提供…尚未核对票面；需补齐…}}。状态：{{…}}。</small></span></label>
+</div></div>
+<div class="priority-group flexible"><h3><span>03</span> 机动安排 <small>{{待讨论的弹性项}}</small></h3><div class="todos">
+<label class="todo"><input type="checkbox" data-check="{{KEY}}"><span><b>{{对象}}｜{{动作}}</b><small>{{按天气/体力决定…}}。状态：{{待定}}。</small></span></label>
+</div></div></section>
+
+<section class="anchors" id="anchors" aria-labelledby="anchors-heading"><h2 id="anchors-heading">固定安排 · 行程锚点</h2><p>{{哪些已订、哪些由用户提供尚未核对订单}}。“固定”表示排程须围绕它们，并非所有项目均已订。</p><div class="anchor-list">
+<!-- REPEAT 锚点卡：<em> 写状态 -->
+<div class="anchor-card" id="anchor-{{KEY}}"><b>{{M/D}} {{类别}} · {{名称/编号}} <em>{{已订／票面待核／代约}}</em></b><small>{{时间、地址、来源层级；被替换的旧信息写“旧…不可沿用”}}</small></div>
+<!-- /REPEAT -->
+</div></section>
+
+<!-- REPEAT 逐日卡片 day1..dayN -->
+<section class="day" id="day1"><div class="day-head"><div class="day-heading"><h2><span class="day-number">DAY {{01}}</span>{{M月D日}} · {{周X}}</h2><p class="day-place">{{城市 · 当日主题}}</p><div class="route-line">{{A}} → {{B}} → {{C}}</div></div>
+<!-- 住宿条：class="stay-bar booked" 或 "stay-bar checkout" -->
+<div class="stay-bar booked"><div class="stay-copy"><div class="stay-name"><span class="stay-label">住宿</span>{{酒店}} · 第 {{N}} 晚</div><p class="stay-note">{{如：跨午夜次日凌晨到店 · 晚到保房待确认}}</p></div><span class="stay-status">{{已订／未订／退房日}}</span></div></div>
+<!-- REPEAT 引用当天固定项 --><a class="anchor-ref" href="#anchor-{{KEY}}">固定安排：{{名称 · 状态}}</a> <!-- /REPEAT -->
+<p class="day-intro">{{当日逻辑：从最后硬约束倒排；触发规则“若X则Y”，如“T 前必须发车，否则改吃备餐”}}</p>
+<div class="section-title">逐时行程 <small>THE ITINERARY</small></div><div class="timeline">
+<!-- REPEAT 行程行：未确认用 <mark class="pending">，已知但需注记用 <span class="status-note"> -->
+<div class="event"><time>{{HH:MM–HH:MM}}</time><div><strong>{{项目}}</strong><mark class="pending">{{票面待核／未订}}</mark><p>{{说明：停留、门到门、触发规则}}</p><p>{{来源链接 · YYYY/MM/DD 查阅}}</p></div></div>
+<div class="event"><time>{{HH:MM到}}</time><div><strong>{{项目}}</strong><span class="status-note">{{酒店代约 · HH:MM}}</span><p>{{提前约5分钟到；排队≠保证入座，后续留弹性}}</p></div></div>
+<!-- /REPEAT -->
+</div>
+
+<!-- 可选：候选比较块 -->
+<div class="section-title">{{M/D}} {{类别}}候选 <small>{{N}}选一 · 未预订</small></div>
+<p class="day-intro">以下仅候选，未选未订。选前须问：{{问题列表}}。</p>
+<div class="anchor-list">
+<!-- REPEAT 候选卡 -->
+<div class="anchor-card"><b>{{序号}} · {{名称}}｜{{一句定位：动线优先／就近备选…}}</b><small>{{地址}}。已知：{{…}}；未核：{{…}}。{{同名/近名区分；单条负评注“未独立核实”}}<a href="{{URL}}">{{来源}}</a></small></div>
+<!-- /REPEAT -->
+</div>
+
+<div class="section-title route-title">当日路线与交通 <small>ROUTE & TRANSFERS</small></div><div class="route-combo"><div class="transport"><div class="mini-head">交通 / 时间估算</div><ul>
+<!-- REPEAT 交通段 --><li>{{起点}} → {{终点}}｜{{方式}}约{{X–Y}}分钟（{{估算／公开时刻／司机待核}}）</li><!-- /REPEAT -->
+</ul></div><div class="map">
+<!-- 多图时用 map-grid：跨城与市区分开，每幅独立比例尺 -->
+<div class="map-grid"><div><div class="map-title">① {{跨城 · A ⇄ B}}</div>
+<!-- REPEAT 地图 SVG 面板：北朝上；点位坐标 = 统一 GCJ-02 后按纬度修正等比投影；比例尺长度按 px/km 计算 -->
+<svg viewBox="0 0 600 260" role="img" aria-label="北朝上，按地理位置和距离比例绘制的路线示意图"><defs><pattern id="g1" width="30" height="30" patternUnits="userSpaceOnUse"><path d="M30 0H0V30" fill="none" stroke="#e6dfd3" stroke-width=".65"/></pattern><marker id="g1a" markerWidth="7" markerHeight="7" refX="6" refY="3.5" orient="auto"><path d="M0 0L7 3.5L0 7Z" fill="#9d473e"/></marker></defs><rect width="600" height="260" fill="#fcfaf6"/><rect width="600" height="260" fill="url(#g1)"/>
+<!-- 连接线（虚线＝行程连接，非道路轨迹） --><path d="M162 70L435 179" fill="none" stroke="#9d473e" stroke-width="2.5" stroke-dasharray="4 4" marker-end="url(#g1a)"/>
+<!-- REPEAT 点位 --><circle cx="151" cy="65" r="11" fill="#9d473e" stroke="#fffdfa" stroke-width="2"/><text x="151" y="69" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="white">1</text><path d="M151 52V30" stroke="#b7aa95" fill="none"/><rect x="88" y="7" width="127" height="39" rx="3" fill="#fcfaf6" fill-opacity=".94"/><text x="151" y="25" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="17" fill="#302e2a">{{地点1}}</text><text x="151" y="44" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="13" fill="#706b63">{{地址1}}</text><!-- /REPEAT -->
+<circle cx="449" cy="185" r="11" fill="#9d473e" stroke="#fffdfa" stroke-width="2"/><text x="449" y="189" text-anchor="middle" font-family="Arial" font-size="12" font-weight="bold" fill="white">2</text><path d="M449 172V150" stroke="#b7aa95" fill="none"/><rect x="392" y="127" width="114" height="39" rx="3" fill="#fcfaf6" fill-opacity=".94"/><text x="449" y="145" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="17" fill="#302e2a">{{地点2}}</text><text x="449" y="164" text-anchor="middle" font-family="Noto Sans CJK SC,Microsoft YaHei,sans-serif" font-size="13" fill="#706b63">{{地址2}}</text>
+<!-- 指北针 --><g transform="translate(565 35)" font-family="sans-serif" font-size="11" fill="#706b63"><path d="M0 -12L-4 3L0 0L4 3Z" fill="#9d473e"/><text x="0" y="-17" text-anchor="middle">北 N</text><text x="0" y="23" text-anchor="middle">南</text><text x="-18" y="6">西</text><text x="14" y="6">东</text></g>
+<!-- 比例尺：把 {{SCALE_PX}} 设为 {{SCALE_KM}} km 对应像素 --><g transform="translate(24 234)" stroke="#706b63" stroke-width="2"><path d="M0 -4V4M0 0H{{SCALE_PX}}M{{SCALE_PX}} -4V4"/></g><text x="24" y="252" font-family="sans-serif" font-size="11" fill="#706b63">{{SCALE_KM}} km</text></svg>
+<!-- /REPEAT -->
+</div><div><div class="map-title">② {{市区放大}}</div><!-- 第二幅 SVG（id 改为 g2/g2a 以免冲突） --></div></div>
+<div class="map-caption">北朝上 · 点位间地理距离近似等比例 · 虚线仅表示行程连接，不是道路轨迹；不可导航。位置为场所代表点，入口／接车点需另核。</div>
+<div class="map-key"><span>A / B 交通枢纽</span><span>1 {{地点1}}</span><span>2 {{地点2}}</span></div>
+<div class="unplaced">{{未画点位及原因：入口/店门未核，不设虚假精确点}}</div>
+</div></div></section>
+<!-- /REPEAT 逐日卡片 -->
+
+<details class="sources" id="map-sources"><summary>地图点位依据与精度说明 · {{YYYY/MM/DD}} 核对</summary><p>点位统一为 {{GCJ-02（中国）／WGS-84}}；其他来源坐标已转换。各图按当地纬度修正经度长度，横纵同一距离比例；比例适用于直线距离，不代表道路里程。代表点不承诺精确入口。</p><ul>
+<!-- REPEAT --><li><a href="{{URL}}">{{来源：地点与坐标/地址}}</a></li><!-- /REPEAT -->
+</ul></details>
+<footer class="footer">V{{主}}.{{次}} · {{YYYY/MM/DD}} {{本版改动}} · 连续阅读／手机适配。{{仍为草案的部分；未订项目；需按旅行日期复核的内容}}</footer></main>
+<script>try{document.querySelectorAll('[data-check]').forEach(el=>{let k='travel-{{TRIP_KEY}}-'+el.dataset.check;el.checked=localStorage.getItem(k)==='1';el.addEventListener('change',()=>localStorage.setItem(k,el.checked?'1':'0'));})}catch(e){}</script>
+</body></html>

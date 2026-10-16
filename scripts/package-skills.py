@@ -13,6 +13,7 @@ import zipfile
 spec = importlib.util.spec_from_file_location('validate_skills', Path(__file__).with_name('validate-skills.py'))
 validator = importlib.util.module_from_spec(spec)
 spec.loader.exec_module(validator)
+from skill_sources import assembled_files
 MAX_BYTES = 25_000_000
 
 
@@ -20,20 +21,20 @@ def package(root, output, sha):
     validator.require(bool(re.fullmatch(r'[0-9a-f]{40}', sha)), 'commit SHA must be 40 lowercase hex characters')
     names = validator.validate_repository(root)
     output = output.resolve()
-    validator.require(not output.is_relative_to((root / 'skills').resolve()), 'output must be outside skills')
+    validator.require(not any(output.is_relative_to((root / p).resolve()) for p in ('shared', 'platforms')),
+                      'output must be outside source directories')
     output.mkdir(parents=True, exist_ok=True)
     artifacts = []
     # Stage all packages before publishing any files, so a failed Skill leaves no partial build.
     with tempfile.TemporaryDirectory(dir=output) as staging:
         stage = Path(staging)
-        for name in names:
-            skill = root / 'skills' / name
-            files = sorted(p for p in skill.rglob('*') if p.is_file())
-            validator.require(sum(p.stat().st_size for p in files) <= MAX_BYTES,
+        for platform, name in names:
+            files = assembled_files(root, platform, name)
+            validator.require(sum(len(content) for content in files.values()) <= MAX_BYTES,
                               f'{name}: uncompressed package exceeds 25 MB')
-            filename = f'{name}-{sha}.zip'
+            filename = f'{platform}-{name}-{sha}.zip'
             archive = stage / filename
-            expected = {f'{name}/{p.relative_to(skill).as_posix()}': p.read_bytes() for p in files}
+            expected = {f'{name}/{rel}': content for rel, content in files.items()}
             with zipfile.ZipFile(archive, 'w', compression=zipfile.ZIP_DEFLATED) as z:
                 for member, content in expected.items():
                     info = zipfile.ZipInfo(member, date_time=(1980, 1, 1, 0, 0, 0))
@@ -48,7 +49,7 @@ def package(root, output, sha):
                 validator.require(f'{name}/SKILL.md' in z.namelist(), f'{name}: missing ZIP entrypoint')
                 for member, content in expected.items():
                     validator.require(z.read(member) == content, f'{name}: ZIP content mismatch')
-            artifacts.append({'skill': name, 'file': filename, 'bytes': archive.stat().st_size,
+            artifacts.append({'platform': platform, 'skill': name, 'file': filename, 'bytes': archive.stat().st_size,
                               'sha256': hashlib.sha256(archive.read_bytes()).hexdigest(),
                               'members': sorted(expected)})
         manifest = {'commit_sha': sha, 'max_package_bytes': MAX_BYTES, 'artifacts': artifacts,

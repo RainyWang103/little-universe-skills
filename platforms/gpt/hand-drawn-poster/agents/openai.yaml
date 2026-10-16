@@ -1,0 +1,6 @@
+interface:
+  display_name: "手绘海报 · GPT"
+  short_description: "照片转为上半摄影、下半极简纸本手绘的竖版海报，保留主体特征"
+  default_prompt: "请使用 $hand-drawn-poster，将我上传的一张照片制作成 3:4 手绘海报，上半保留照片，下半为极简纸本手绘，各占 50%，默认无文字。"
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"

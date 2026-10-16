@@ -29,13 +29,18 @@ class ScriptTests(unittest.TestCase):
         self.temp = tempfile.TemporaryDirectory()
         self.addCleanup(self.temp.cleanup)
         self.root = Path(self.temp.name) / 'repo'
-        # These malformed-input fixtures intentionally start with one known Skill.
-        shutil.copytree(ROOT / 'skills/travel-planner', self.root / 'skills/travel-planner')
+        for platform in ('gpt', 'grok'):
+            payload = packager.assembled_files(ROOT, platform, 'travel-planner')
+            for rel, content in payload.items():
+                target = self.root / 'platforms' / platform / 'travel-planner' / rel
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_bytes(content)
+        (self.root / 'shared').mkdir()
         shutil.copytree(ROOT / '.github', self.root / '.github')
         shutil.copytree(ROOT / 'scripts', self.root / 'scripts', ignore=shutil.ignore_patterns('__pycache__'))
         for filename in ('README.md', '.gitignore'):
             shutil.copyfile(ROOT / filename, self.root / filename)
-        self.skill = self.root / 'skills/travel-planner'
+        self.skill = self.root / 'platforms/gpt/travel-planner'
 
     def cli(self, script='validate-skills.py', *args):
         return subprocess.run([sys.executable, str(ROOT / 'scripts' / script),
@@ -110,11 +115,13 @@ class ScriptTests(unittest.TestCase):
         self.reject('symlinks')
 
     def test_all_skill_directories_checked(self):
-        (self.root / 'skills/broken').mkdir()
+
+        for platform in ('gpt', 'grok'):
+            (self.root / 'platforms' / platform / 'broken').mkdir()
         self.reject('missing SKILL.md')
 
     def test_no_skills(self):
-        shutil.rmtree(self.root / 'skills/travel-planner')
+        shutil.rmtree(self.skill)
         self.reject('no Skills')
 
     def test_malformed_workflow(self):
@@ -126,19 +133,20 @@ class ScriptTests(unittest.TestCase):
         self.reject('missing repository file')
 
     def test_multiple_independent_packages_and_reproducibility(self):
-        second = self.root / 'skills/second-planner'
-        shutil.copytree(self.skill, second)
-        for path in [second / 'SKILL.md', second / 'agents/openai.yaml']:
-            path.write_text(path.read_text().replace('travel-planner', 'second-planner'))
+        for platform in ('gpt', 'grok'):
+            second = self.root / 'platforms' / platform / 'second-planner'
+            shutil.copytree(self.root / 'platforms' / platform / 'travel-planner', second)
+            for path in [second / 'SKILL.md', second / 'agents/openai.yaml']:
+                path.write_text(path.read_text().replace('travel-planner', 'second-planner'))
         output = self.root / 'dist'
         first = packager.package(self.root, output, SHA)
-        self.assertEqual(len(first['artifacts']), 2)
+        self.assertEqual(len(first['artifacts']), 4)
         for artifact in first['artifacts']:
             with zipfile.ZipFile(output / artifact['file']) as z:
                 self.assertTrue(all(n.startswith(artifact['skill'] + '/') for n in z.namelist()))
                 self.assertIn(artifact['skill'] + '/SKILL.md', z.namelist())
                 for member in z.namelist():
-                    self.assertEqual(z.read(member), (self.root / 'skills' / member).read_bytes())
+                    self.assertEqual(z.read(member), (self.root / 'platforms' / artifact['platform'] / member).read_bytes())
                 self.assertIsNone(z.testzip())
         second_build = packager.package(self.root, output, SHA)
         self.assertEqual(first, second_build)
@@ -167,17 +175,17 @@ class ScriptTests(unittest.TestCase):
         for path in self.skill.rglob('*'):
             if path.is_file():
                 path.unlink()
-        (self.skill / 'SKILL.md').write_text('---\nname: travel-planner\ndescription: x\n---\nx\n')
+        (self.skill / 'SKILL.md').write_text('---\nname: travel-planner\ndescription: x\n---\n[Runtime](references/platform-runtime.md)\n')
         (self.skill / 'agents/openai.yaml').write_text(
             'interface:\n  display_name: x\n  short_description: x\n  default_prompt: $travel-planner\n')
-        (self.skill / 'references/x.md').write_text('x')
+        (self.skill / 'references/platform-runtime.md').write_text('x')
         total = sum(p.stat().st_size for p in self.skill.rglob('*') if p.is_file())
         with patch.object(packager, 'MAX_BYTES', total):
             with self.assertRaisesRegex(ValueError, 'ZIP exceeds 25 MB'):
                 packager.package(self.root, self.root / 'dist', SHA)
 
     def test_output_inside_skill_rejected(self):
-        with self.assertRaisesRegex(ValueError, 'outside skills'):
+        with self.assertRaisesRegex(ValueError, 'outside source directories'):
             packager.package(self.root, self.skill / 'dist', SHA)
 
 

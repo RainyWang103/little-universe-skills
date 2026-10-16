@@ -1,0 +1,4 @@
+interface:
+  display_name: "Safety Charter · GPT"
+  short_description: "检查行动授权、隐私保护、外部指令注入与助手协作边界和风险"
+  default_prompt: "请使用 $safety-charter，在行动前核对授权、不可信内容、付款禁令与 Bot 互调深度。"

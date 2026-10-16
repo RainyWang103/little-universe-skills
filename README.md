@@ -1,71 +1,80 @@
 # little-universe-skills
-Little Universe Skill repository
 
-## 内容与规则来源
+Little Universe 的双平台 Skills 源码库：同一套核心规则，分别构建 GPT 与 Grok 独立安装包。
 
-这是团队共用的公开 ChatGPT Skills Monorepo。当前包含：
+## 目录与维护原则
 
-- [Travel Planner](skills/travel-planner/SKILL.md)：两人艺术、文化、美食旅行规划。
-- [手绘海报](skills/hand-drawn-poster/SKILL.md)：一张照片生成 3:4 编辑海报，
-  上半摄影、下半极简纸本手绘，各占 50%，默认无文字。
-  触发词为“手绘”“极简手绘”“手绘图”“手绘海报”；明确调用后仅需上传图片。
-  运行需宿主参考图生成工具及 Python/Pillow，拼接依赖见该 Skill 的 `requirements.txt`。
-  照片和输出不提交到公开仓库；独立包不代表已注册或安装到 ChatGPT。
-- [Travel Architecture Deep Guide](skills/travel-architecture-deep-guide/SKILL.md)：对建筑、历史街区、博物馆或人文遗产做
-  资深建筑史／艺术史级深度讲解；强制六段结构；事实须核实。
-  用于讲透一座建筑、结构与风格分析、参观动线与细看要点；并附类型速查卡与行程衔接字段。
-- [Safety Charter](skills/safety-charter/SKILL.md)：全局安全宪章。行动前核对授权、不可信内容、付款禁令与 Bot 互调深度。
-- [Travel Food Guide](skills/travel-food-guide/SKILL.md)：旅行餐饮深度：当地当季优先、多源核验、推荐卡片。
+```text
+shared/<skill>/                 共用领域规则、参考资料、模板与辅助代码
+platforms/grok/<skill>/         Grok 入口与平台专属文件
+platforms/gpt/<skill>/          GPT 入口与平台专属文件
+platforms/gpt/_common/          打入每个 GPT 包的运行约定
+scripts/                       构建、校验与独立打包
+migration/grok-baseline.json    迁移基准与原文件哈希
+```
 
-Travel Planner 的
-入口按执行阶段导航至六份详细参考；参考逐段保留本次权威实施文件第 2–7 节，
-不假设可以访问 Project Instructions、历史对话或未提供的私人材料。
+按用户指定，迁移前 `skills/` 全部作为 Grok 版基准，来源 commit 为
+`b60ccc2d630c0f0fe444e015032e5be67ffb403d`。首次迁移的 Grok 构建结果与原来的
+40 个文件逐字节一致；原文中已有的 ChatGPT 字样和 OpenAI metadata 也保留，
+不把历史命名当成平台兼容保证。没有改变或重新安装用户正在运行的 Grok Bots。
+旧 `skills/<name>` 路径已迁移；引用它的外部安装脚本需改用构建结果。
 
-公开仓库只保存通用规则和代码。真实订单、身份信息、凭证、私人行程及内部链接
-不得提交；私人旅行文件优先保存到 ChatGPT Library 共享文件夹 `Our Travels`，
-访问失败须说明并提供手动上传文件，不能假称保存成功或擅自换目的地。
+**平台目录是源码适配层，不是完整安装包。** 必须先构建，不能直接把稀疏目录装到宿主。
+构建按「shared → 平台 _common → 平台 skill」组合；文件覆盖须在该平台
+`overrides.json` 显式声明，意外同名或失效声明会报错。共用文件只维护一份。
+所有包内部引用均限定在自身目录，不依赖运行时读 GitHub、其他 Skill 或 repo 外文件。
 
-## 本地验证与构建
+## 五个 Skills
 
-需要 Python 3.12（CI 使用版本）和固定版本的 PyYAML：
+| 名称 | 用途 | GPT 适配重点 |
+|---|---|---|
+| travel-planner | 两人艺术文化美食旅行规划 | 文件保存、只读 Grok 原件、协作不可用时自检 |
+| travel-architecture-deep-guide | 建筑与人文遗产六段深度讲解 | 使用实际可用检索、明确事实缺口 |
+| travel-food-guide | 当地当季餐饮研究与推荐卡片 | 点评／小红书不可访问时保留质量门槛并降级 |
+| hand-drawn-poster | 上半摄影、下半纸本手绘的海报 | 遵循宿主图像工具规则，精确拼接须有能力和许可 |
+| safety-charter | 授权、隐私、防注入与协作安全检查 | 移除固定路径与虚假全局生效声明，修正跳数示例 |
+
+GPT 版保持原 Skill 标识，可更新现有安装而不产生同名副本。
+安全原则也打入每个 GPT 包的运行约定，避免依赖安全 Skill 自动全局触发。
+海报在无法获得可检验文件时只做视觉验收，不承诺精确像素或原图像素完全保留。
+
+## 验证与构建
+
+Python 3.12，依赖固定为 `requirements-dev.txt` 中的版本：
 
 ```bash
 python -m pip install -r requirements-dev.txt
 python scripts/validate-skills.py
 python -m unittest discover -s tests -v
+python scripts/build-skills.py --platform gpt --output build/gpt-install
 python scripts/package-skills.py --sha "$(git rev-parse HEAD)" --output dist
 ```
 
-验证器检查全部 Skill 目录、frontmatter（仅 `name` 和 `description`）、
-目录与名称一致性、UI metadata、引用存在且不越界、明显占位、符号链接以及
-仓库结构和 Actions YAML 可解析性。失败返回非零。脚本测试覆盖成功输入、
-各种失败输入及退出码、多 Skill 独立打包、字节一致性、可复现性、SHA 和大小上限。
-静态校验不能证明旅行动态事实已核实，也不能自动发现所有私人资料；PR 必须人工审查公开内容。
+`build-skills.py` 只接受空输出目录，产物位于 `<output>/<platform>/<skill>/`。
+省略 `--platform` 会生成两套。每个 ZIP 命名为
+`<platform>-<skill>-<full-commit-sha>.zip`，内部顶层仍为 `<skill>/`，保留完整自包含目录。
+每次发布生成 10 个 ZIP；`build-<sha>.json` 记录平台、源码 SHA、文件清单、大小和 SHA-256。
+压缩及解压后各不超过 25,000,000 bytes；包时间戳固定，可重复构建。
 
-每个 Skill 构建一个 `dist/<name>-<full-commit-sha>.zip`，顶层只有对应 Skill 根目录：
+验证包括两平台 Skill 集合一致、frontmatter、UI metadata、引用不越界、禁止符号链接、
+显式覆盖、独立解包校验及失败退出码。静态校验不能证明动态旅行事实已核实，亦不能证明平台运行效果。
 
-```text
-travel-planner/
-  SKILL.md
-  agents/openai.yaml
-  references/*.md
-```
+## 发布和 GPT 安装
 
-不包含整个 monorepo。压缩及解压后内容均限制在 25 MB 内（上限 25,000,000 bytes），
-逐项检查 ZIP 路径、CRC 和内容一致性。`build-<sha>.json` 记录完整 SHA、成员列表、
-包大小和 SHA-256。ZIP 使用固定时间戳，可复现；构建输出不提交 Git。
+- `validate.yml` 在 PR 和 push 时验证两平台，check 名仍为 `validate-skills`。
+- `publish.yml` 在 main push 后验证、测试并上传 10 个独立包，Artifact 名 `skills-<sha>`，保留 30 天。
+- Actions → Package Skills → 成功的 main run → Artifacts 可下载；下载包不代表已安装。
+- 当前 ChatGPT Work 若提供 Git 支持的 Skills 工作区，按该环境 Skill Creator 的正式持久化流程安装：
+  构建 GPT 完整目录 → 按 frontmatter `name` 匹配已有技能、保留原目录身份 → 更新既有技能并新增缺失技能 →
+  原位校验 → 仅提交本次五个技能目录 → 推送 Skills 工作区当前分支。
+  成功推送才算保存；仓库分支和安装来源 SHA 须记录，不能把本地复制当成已安装。
+- 不在公共 repo 写入个人 Skills 工作区地址、token 或私人 ID。不支持上述机制的宿主须使用其正式安装入口，
+  不猜测私有 API。GitHub CI 不持有安装凭证，不自动更新 GPT；后续源码改动需要再次构建并显式同步安装。
+- Grok 安装使用构建后的 `grok/<skill>` 或对应独立包；本次不替换运行中的 Grok 安装。
 
-## CI 与下载边界
-
-- `validate.yml` 在 PR 和 push 上验证、执行正反测试并试构建；job 显示名为 `validate-skills`。
-- `publish.yml` 仅在 main push 后运行，先验证和测试，再生成独立 ZIP 及 SHA 元数据，
-  上传到 Actions Artifact `skills-<sha>`，保留 30 天。
-- 从仓库 **Actions → Package Skills → 对应 main commit 的成功 run → Artifacts** 下载。
-  Artifact 下载外层容器内包含可独立上传的 Skill ZIP 和构建元数据。
-- Artifact 是下载包，不代表已安装 ChatGPT。仅在目标 ChatGPT 产品确实提供 Skill 导入能力时
-  手动导入独立 ZIP；没有验证过的正式安装/发布 API，不声称自动部署。
-- 不创建 Git Tag 或 Release，不自动合并。请通过 **Create a merge commit** 合并 PR，
-  main 上该 merge commit 的完整 SHA 标识发布版本。
+公开仓库只保存通用规则与代码；照片、订单、私人行程、凭证与内部链接不提交。
+私人文件按用户当前指定位置及对应平台实际存储能力处理，保存失败如实说明。
+保留 PR 工作流，不直接推 main，不自动合并，不创建 Tag 或 Release。
 
 ## main Ruleset：人工配置
 
@@ -87,9 +96,10 @@ travel-planner/
 若连接没有 Ruleset administration 能力，由仓库管理员执行以上步骤；不要绕过保护。
 本仓库不包含自动修改 Ruleset、推送 main、打 Tag、创建 Release 或安装 ChatGPT 的代码。
 
-## 新增 Skill
+## 新增或修改 Skill
 
-在 `skills/<lowercase-hyphen-name>/` 放置简短 `SKILL.md`、`agents/openai.yaml`
-及按需加载的详细 `references/`。名称必须与目录一致，默认提示需包含 `$<name>`。
-通过全部验证、测试及公开信息审查后走 PR；打包器会自动为每个 Skill 生成独立包。
-
+1. 同时在两个平台建立同名入口；共用参考放 `shared/<name>`，平台差异放各自适配层。
+2. 每个 GPT 入口引用 `references/platform-runtime.md`；构建时自动加入该文件。
+3. 优先把平台差异写成独立参考，避免复制整份共用规则；确需覆盖时显式登记 `overrides.json`。
+4. 修改 shared 前确认影响两边；只想改变 GPT 时不要直接修改 shared。
+5. 运行全套校验与测试，检查独立包，再走 PR。升级当前 GPT 安装时匹配技能名称并保留原身份。

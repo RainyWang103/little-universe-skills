@@ -68,6 +68,9 @@ python scripts/package-skills.py --sha "$(git rev-parse HEAD)" --output dist
   构建 GPT 完整目录 → 按 frontmatter `name` 匹配已有技能、保留原目录身份 → 更新既有技能并新增缺失技能 →
   原位校验 → 每次仅提交一个技能目录 → 推送 Skills 工作区当前分支，再处理下一个技能。
   当前保存服务拒绝一次提交多个 Skill；不要把多技能更改合成一次推送。
+  服务可能在保存后追加规范化提交或为新技能分配目录 ID；下一次操作前先 fetch 并快进，重新按 name 定位。
+  遇到 fetch-first 时先读取远端更新，将当前单技能提交 rebase 后再推送，不 force push。
+  验证时允许宿主补充 UI metadata，但指令和参考正文必须与构建结果一致。
   成功推送才算保存；仓库分支和安装来源 SHA 须记录，不能把本地复制当成已安装。
 - 不在公共 repo 写入个人 Skills 工作区地址、token 或私人 ID。不支持上述机制的宿主须使用其正式安装入口，
   不猜测私有 API。GitHub CI 不持有安装凭证，不自动更新 GPT；后续源码改动需要再次构建并显式同步安装。

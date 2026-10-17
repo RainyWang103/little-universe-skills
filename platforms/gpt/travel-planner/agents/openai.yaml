@@ -1,0 +1,6 @@
+interface:
+  display_name: "Travel Planner · GPT"
+  short_description: "两人艺术文化美食旅行：事实核验、门到门排程、预算与行程复核"
+  default_prompt: "请使用 $travel-planner，依据我已提供的条件规划两人旅行，先核查目标日期的硬约束，再给出路线取舍、可执行行程和预订优先级。"
+  icon_small: "assets/icon.svg"
+  icon_large: "assets/icon.svg"

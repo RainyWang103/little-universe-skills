@@ -4,9 +4,13 @@ import argparse
 from pathlib import Path
 import re
 import sys
+import tempfile
 from urllib.parse import unquote, urlsplit
 
 import yaml
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from skill_sources import materialize
 
 
 class UniqueLoader(yaml.SafeLoader):
@@ -96,18 +100,25 @@ def validate_skill(skill):
 def validate_repository(root):
     for required in ('.github/workflows/validate.yml', '.github/workflows/publish.yml',
                      '.github/pull_request_template.md', 'scripts/validate-skills.py',
-                     'scripts/package-skills.py', 'README.md', '.gitignore'):
+                     'scripts/package-skills.py', 'scripts/build-skills.py', 'scripts/skill_sources.py',
+                     'README.md', '.gitignore'):
         require((root / required).is_file(), f'missing repository file: {required}')
-    skills_dir = root / 'skills'
-    require(skills_dir.is_dir(), 'missing skills directory')
-    skills = sorted(p for p in skills_dir.iterdir() if p.is_dir())
-    require(skills, 'no Skills found')
     errors = []
-    for skill in skills:
-        try:
-            validate_skill(skill)
-        except (ValueError, OSError, yaml.YAMLError) as exc:
-            errors.append(f'{skill.name}: {exc}')
+    with tempfile.TemporaryDirectory() as tmp:
+        stage = Path(tmp)
+        entries = materialize(root, stage)
+        for platform, name in entries:
+            try:
+                skill = stage / platform / name
+                validate_skill(skill)
+                if platform == 'gpt':
+                    entry = (skill / 'SKILL.md').read_text()
+                    require('references/platform-runtime.md' in entry, 'missing GPT runtime reference')
+                    for path in skill.rglob('*.md'):
+                        content = path.read_text()
+                        require('/home/box/agent-data/' not in content, 'foreign runtime path in GPT package')
+            except (ValueError, OSError, yaml.YAMLError) as exc:
+                errors.append(f'{platform}/{name}: {exc}')
     for workflow in sorted((root / '.github/workflows').glob('*.y*ml')):
         try:
             data = load_yaml(workflow.read_text(encoding='utf-8'))
@@ -118,7 +129,7 @@ def validate_repository(root):
         except (ValueError, OSError, yaml.YAMLError) as exc:
             errors.append(f'{workflow.name}: {exc}')
     require(not errors, '\n'.join(errors))
-    return [p.name for p in skills]
+    return entries
 
 
 def main():
@@ -130,7 +141,7 @@ def main():
     except (ValueError, OSError, yaml.YAMLError) as exc:
         print(f'Validation failed: {exc}', file=sys.stderr)
         return 1
-    print('Validated: ' + ', '.join(names))
+    print('Validated: ' + ', '.join(f'{p}/{n}' for p, n in names))
     return 0
 
 

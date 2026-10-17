@@ -1,0 +1,4 @@
+interface:
+  display_name: "Travel Food Guide · GPT"
+  short_description: "当地当季美食研究：餐厅筛选、多源核验、推荐卡片与行程衔接"
+  default_prompt: "请使用 $travel-food-guide，按当地特色与当季优先给出餐饮深度建议，先做多源核验与注水过滤，再按推荐卡片输出。"

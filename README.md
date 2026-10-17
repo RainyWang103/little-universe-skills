@@ -1,6 +1,13 @@
-# little-universe-skills
+# Saturn’s Rings
 
-Little Universe 的双平台 Skills 源码库：同一套核心规则，分别构建 GPT 与 Grok 独立安装包。
+![Saturn’s Rings](assets/saturns-rings-logo.png)
+
+**一起生活、探索与创造。**
+
+Saturn’s Rings 是两个人共同生活与工作的双平台 Skills 源码库，面向旅行、研究、购物计划、编程与日常创作。同一套核心规则，分别构建 GPT 与 Grok 独立安装包；现有技能见下方清单。
+
+品牌原名 Little Universe Skills。仓库目标名称为 `saturns-rings`；GitHub 仓库路径需由管理员在 Settings → General 中完成重命名，再更新同步任务的仓库指向。
+Plugin 显示名为 **Saturn’s Rings**；已安装 Plugin 的内部包名与各 Skill 的 `name` 保持稳定，以便原位更新。
 
 ## 目录与维护原则
 
